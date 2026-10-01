@@ -1,0 +1,37 @@
+name: CRM ping
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Message to echo into the run summary"
+        required: true
+        default: "Hello from Twenty"
+        type: string
+      recordId:
+        description: "Optional Twenty CRM record id that triggered this run"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo inputs
+        env:
+          MESSAGE: ${{ inputs.message }}
+          RECORD_ID: ${{ inputs.recordId }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          echo "message: $MESSAGE"
+          echo "recordId: ${RECORD_ID:-(none)}"
+          {
+            echo "## CRM ping"
+            echo ""
+            echo "- Message: $MESSAGE"
+            echo "- Record id: ${RECORD_ID:-(none)}"
+            echo "- Actor: \`$ACTOR\`"
+          } >> "$GITHUB_STEP_SUMMARY"

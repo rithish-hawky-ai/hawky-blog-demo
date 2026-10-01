@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import { withBase } from '../lib/url';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Performance marketing notes adapted from hawky.ai/blog.' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href={withBase('/')}>Hawky Blog Demo</a>
+        <nav>
+          <a href={withBase('/')}>Posts</a>
+          <a href="https://hawky.ai/blog">hawky.ai/blog</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        Posts adapted from <a href="https://hawky.ai/blog">hawky.ai/blog</a>. Demo site for a Twenty CRM workflow.
+      </div>
+    </footer>
+  </body>
+</html>
